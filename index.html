@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Costa 2026 - Itinerario de Viaje</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&:wght@200;300;400;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+            background: #fff;
+            min-height: 100vh;
+        }
+
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)),
+                url('https://res.cloudinary.com/dh4hbkqkp/image/upload/v1770816936/villa-gesell-ff.jpg') center/cover;
+            padding: 100px 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            min-height: 100vh;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            color: white;
+            font-weight: 400;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            letter-spacing: -2px;
+        }
+
+        .hero-btn {
+            min-width: 300px;
+            justify-content: center;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            backdrop-filter: blur(5px);
+            color: #fff;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Days Grid */
+        .days-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 40px;
+            padding: 70px 40px;
+            border-radius: 60px 60px 0 0;
+            position: relative;
+            top: -99px;
+            background: #fff;
+        }
+
+        /* Day Card */
+        .day-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            height: 400px;
+        }
+
+        .day-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .day-card.expanded {
+            background: linear-gradient(180deg, #dbeafe 0%, #93c5fd 100%);
+            position: relative;
+            height: auto;
+        }
+
+        .day-card.expanded::before {
+            content: '';
+            position: absolute;
+            top: 400px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(30, 58, 138, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.08) 0%, transparent 50%);
+            background-size: 100% 100%, 150% 150%, 200% 200%;
+            filter: blur(60px);
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .day-card.expanded::after {
+            content: '';
+            position: absolute;
+            top: 400px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(30, 58, 138, 0.04) 1px, rgba(30, 58, 138, 0.04) 2px),
+                repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(59, 130, 246, 0.04) 1px, rgba(59, 130, 246, 0.04) 2px);
+            background-size: 3px 3px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        .day-card>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        .day-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .day-card.expanded .day-image {
+            position: relative;
+            height: 400px;
+        }
+
+        .day-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7));
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .day-card.expanded::after {
+            display: none;
+        }
+
+        .day-content {
+            padding: 24px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2;
+        }
+
+        .day-card.expanded .day-content {
+            position: relative;
+            padding: 24px;
+        }
+
+        .day-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .day-card.expanded .day-title {
+            font-size: 24px;
+            color: #2d3748;
+            text-shadow: none;
+        }
+
+        .day-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 16px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .day-card.expanded .day-subtitle {
+            font-size: 14px;
+            color: #718096;
+            text-shadow: none;
+        }
+
+        /* Itinerary Details */
+        .itinerary-details {
+            display: none;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .day-card.expanded .itinerary-details {
+            display: block;
+        }
+
+        .activity {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #2563eb;
+        }
+
+        .activity:last-of-type {
+            border-left-color: #3b82f6;
+        }
+
+        .activity-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #2563eb;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+
+        .activity-hour,
+        .activity-launch,
+        .activity-dinner {
+            color: #4a5568;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+        }
+
+        .btn-secondary:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .photos-section {
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 2px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .photos-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 16px;
+        }
+
+        /* Icons */
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero {
+                padding: 60px 24px;
+            }
+
+            .hero-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .days-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .day-title {
+                font-size: 28px;
+            }
+        }
+
+        /* No Olvidar Section */
+        .no-olvidar {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 40px;
+            margin-left: 20px;
+            margin-right: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .no-olvidar h2 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #2563eb;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 30%);
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e3a8a;
+            transition: transform 0.2s ease;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(5px);
+        }
+
+        .checklist-icon {
+            font-size: 24px;
+            min-width: 24px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>La Costa 2026</h1>
+            <div class="hero-container" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="https://maps.app.goo.gl/Jj2GEC6zqDqQ96BZ" target="_blank" class="hero-btn">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Cómo llegar
+                </a>
+                <a href="https://photos.app.goo.gl/ZAhs1winBkE1XHX9A" target="_blank" class="hero-btn">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Álbum de fotos
+                </a>
+                <a href="#no-olvidar" class="hero-btn">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                    No olvidar!
+                </a>
+            </div>
+        </section>
+
+        <!-- Days Grid -->
+        <div class="days-grid">
+            <!-- Day 1: Sábado 14/2 -->
+            <div class="day-card" onclick="toggleCard(this)">
+                <img src="https://res.cloudinary.com/dh4hbkqkp/image/upload/v1770818713/pinamar_i9yfjk.avif"
+                    alt="Pinamar" class="day-image">
+                <div class="day-content">
+                    <h2 class="day-title">Día 1: Pinamar</h2>
+                    <p class="day-subtitle">Sábado 14 de Febrero</p>
+
+                    <div class="itinerary-details">
+                        <div class="activity">
+                            <div class="activity-time">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                Mañana
+                            </div>
+                            <h3 class="activity-title">Playa de Pinamar</h3>
+                            <p class="activity-hour">⏰ Hora de salida: 11:00 AM</p>
+                            <p class="activity-launch">🥪 Almuerzo: Sanguches de jamón y queso</p>
+                            <a href="https://maps.app.goo.gl/WiSNkxxE87DWMpAJ7" target="_blank" class="btn btn-primary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                </svg>
+                                Cómo llegar
+                            </a>
+                        </div>
+
+                        <div class="activity">
+                            <div class="activity-time">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                </svg>
+                                Noche
+                            </div>
+                            <h3 class="activity-title">Centro de San Bernardo</h3>
+                            <p class="activity-hour">⏰ Hora: 20:00 HS</p>
+                            <p class="activity-dinner">🍽️ Cena: Milanesas con ensalada</p>
+                            <a href="https://maps.app.goo.gl/gTE6UMmG5YazTtng7" target="_blank" class="btn btn-primary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                </svg>
+                                Punto de encuentro
+                            </a>
+                        </div>
+
+                        <div class="photos-section">
+                            <h4 class="photos-title">📸 Subí tus fotos del día</h4>
+                            <a href="https://photos.app.goo.gl/ZAhs1winBkE1XHX9A" target="_blank"
+                                class="btn btn-secondary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Subir a Google Photos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 2: Domingo 15/2 -->
+            <div class="day-card" onclick="toggleCard(this)">
+                <img src="https://res.cloudinary.com/dh4hbkqkp/image/upload/v1770818904/carilo-ff.jpg"
+                    alt="San Bernardo" class="day-image">
+                <div class="day-content">
+                    <h2 class="day-title">Día 2: Cariló</h2>
+                    <p class="day-subtitle">Domingo 15 de Febrero</p>
+
+                    <div class="itinerary-details">
+                        <div class="activity">
+                            <div class="activity-time">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                Todo el día
+                            </div>
+                            <h3 class="activity-title">Playa de Cariló</h3>
+                            <p class="activity-hour">⏰ Desde las 11:00 AM</p>
+                            <p class="activity-launch">🥪 Almuerzo: Sanguches de milanesa</p>
+                            <a href="https://maps.app.goo.gl/J3Nm2m4rVeZzQL7w9" target="_blank" class="btn btn-primary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                </svg>
+                                Cómo llegar
+                            </a>
+                        </div>
+                        <div class="activity">
+                            <div class="activity-time">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                </svg>
+                                Noche
+                            </div>
+                            <h3 class="activity-title">Centro de San Bernardo</h3>
+                            <p class="activity-hour">⏰ Hora: 20:00 HS</p>
+                            <p class="activity-dinner">🍽️ Cena: Asado</p>
+                            <a href="https://maps.app.goo.gl/gTE6UMmG5YazTtng7" target="_blank" class="btn btn-primary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                </svg>
+                                Punto de encuentro
+                            </a>
+                        </div>
+
+
+                        <div class="photos-section">
+                            <h4 class="photos-title">📸 Subí tus fotos del día</h4>
+                            <a href="https://photos.app.goo.gl/ZAhs1winBkE1XHX9A" target="_blank"
+                                class="btn btn-secondary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Subir a Google Photos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 3: Lunes 16/2 -->
+            <div class="day-card" onclick="toggleCard(this)">
+                <img src="https://res.cloudinary.com/dh4hbkqkp/image/upload/v1770816956/Villa_Gesell_pipvi5.png"
+                    alt="Día en la playa" class="day-image">
+                <div class="day-content">
+                    <h2 class="day-title">Día 3: Villa Gesell</h2>
+                    <p class="day-subtitle">Lunes 16 de Febrero</p>
+
+                    <div class="itinerary-details">
+                        <div class="activity">
+                            <div class="activity-time">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                Todo el día
+                            </div>
+                            <h3 class="activity-title">Playa de Villa Gesell</h3>
+                            <p class="activity-hour">⏰ Desde las 11:00 AM</p>
+                            <p class="activity-launch">🥪 Almuerzo: Tacos</p>
+                            <a href="https://maps.app.goo.gl/kN32vAnS6Ea9MJA28" target="_blank" class="btn btn-primary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                </svg>
+                                Cómo llegar
+                            </a>
+                        </div>
+                        <div class="activity">
+                            <div class="activity-time">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                </svg>
+                                Noche
+                            </div>
+                            <h3 class="activity-title">Centro de San Bernardo</h3>
+                            <p class="activity-hour">⏰ Hora: 20:00 HS</p>
+                            <p class="activity-dinner">🍽️ Cena: Choris / Hamburguesas</p>
+                            <a href="https://maps.app.goo.gl/gTE6UMmG5YazTtng7" target="_blank" class="btn btn-primary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                </svg>
+                                Punto de encuentro
+                            </a>
+                        </div>
+
+
+                        <div class="photos-section">
+                            <h4 class="photos-title">📸 Subí tus fotos del día</h4>
+                            <a href="https://photos.app.goo.gl/ZAhs1winBkE1XHX9A" target="_blank"
+                                class="btn btn-secondary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Subir a Google Photos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 4: Martes 17/2 -->
+            <div class="day-card" onclick="toggleCard(this)">
+                <img src="https://res.cloudinary.com/dh4hbkqkp/image/upload/v1770819040/valeriadelmar-ff.jpg"
+                    alt="Regreso" class="day-image">
+                <div class="day-content">
+                    <h2 class="day-title">Día 4: Valeria del Mar</h2>
+                    <p class="day-subtitle">Martes 17 de Febrero</p>
+
+                    <div class="itinerary-details">
+                        <div class="activity">
+                            <div class="activity-time">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                Mañana
+                            </div>
+                            <h3 class="activity-title">Check-out, Valeria del Mar y regreso a casa</h3>
+                            <p class="activity-hour">⏰ Check-out: 8:00 AM</p>
+                            <p class="activity-launch">🍽️ Almuerzo: Choris / Hamburguesas</p>
+                            <a href="https://maps.app.goo.gl/TBUs4GeGzjtmmNkc6" target="_blank" class="btn btn-primary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                </svg>
+                                Cómo llegar
+                            </a>
+                        </div>
+
+                        <div class="photos-section">
+                            <h4 class="photos-title">📸 Subí tus fotos del día</h4>
+                            <a href="https://photos.app.goo.gl/ZAhs1winBkE1XHX9A" target="_blank"
+                                class="btn btn-secondary">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Subir a Google Photos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Olvidar Section -->
+        <section class="no-olvidar" id="no-olvidar">
+            <h2>📋 No Olvidar!</h2>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <span class="checklist-icon">🛏️</span>
+                    Ropa de cama
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🧖🏻‍♀️</span>
+                    Toallas
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🧴</span>
+                    Protector solar
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🦟</span>
+                    Repelente
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">👙</span>
+                    Traje de baño
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🩴</span>
+                    Ojotas
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🕶️</span>
+                    Lentes de sol
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🧢</span>
+                    Gorra/Sombrero
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">💊</span>
+                    Botiquín básico
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🔌</span>
+                    Cargadores
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🍹</span>
+                    Mate y termo
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🎒</span>
+                    Mochila de playa
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">📱</span>
+                    DNI y documentos
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">💳</span>
+                    Tarjetas y efectivo
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🧊</span>
+                    Conservadora
+                </div>
+                <div class="checklist-item">
+                    <span class="checklist-icon">🎮</span>
+                    Juegos de playa
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleCard(card) {
+            const wasExpanded = card.classList.contains('expanded');
+
+            // Cerrar todas las cards
+            document.querySelectorAll('.day-card').forEach(c => {
+                c.classList.remove('expanded');
+            });
+
+            // Si no estaba expandida, expandirla
+            if (!wasExpanded) {
+                card.classList.add('expanded');
+
+                // Scroll suave hacia la card expandida
+                setTimeout(() => {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+    </script>
+</body>
+
+</html>
