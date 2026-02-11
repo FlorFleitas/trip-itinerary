@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Costa 2026 - Itinerario de Viaje</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins&:wght@200;300;400;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;700;800;900&display=swap');
 
         * {
             margin: 0;
@@ -222,65 +222,109 @@
             display: none;
             margin-top: 24px;
             padding-top: 24px;
-            border-top: 2px solid #e2e8f0;
         }
 
         .day-card.expanded .itinerary-details {
             display: block;
         }
 
-        .activity {
+        /* Timeline */
+        .timeline {
+            position: relative;
             background: white;
-            padding: 24px;
+            padding: 30px 30px 30px 50px;
             border-radius: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border-left: 4px solid #2563eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
-        .activity:last-of-type {
-            border-left-color: #3b82f6;
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 65px;
+            bottom: 30px;
+            width: 3px;
+            background: linear-gradient(to bottom, #2563eb, #3b82f6);
+            border-radius: 3px;
         }
 
-        .activity-time {
+        .timeline-item {
+            position: relative;
+            padding-bottom: 35px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -35px;
+            top: 32px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border: 3px solid #2563eb;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+            z-index: 1;
+        }
+
+        .timeline-content {
+            padding-left: 0;
+        }
+
+        .timeline-time {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #2563eb;
+            font-weight: 600;
+            font-size: 11px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timeline-detail {
+            color: #777;
+            font-size: 15px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #2563eb;
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 8px;
         }
 
-        .activity-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 12px;
-        }
-
-        .activity-hour,
-        .activity-launch,
-        .activity-dinner {
-            color: #4a5568;
-            font-size: 16px;;
+        .emoji-icon {
+            background: #777;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            margin-top: 15px;
-            padding: 12px 24px;
+            margin-top: 12px;
+            padding: 10px 20px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            min-width: 200px;
-            justify-content: center;
         }
 
         .btn-primary {
@@ -298,7 +342,6 @@
             background: white;
             color: #2563eb;
             border: 2px solid #2563eb;
-            margin-top: 0;
         }
 
         .btn-secondary:hover {
@@ -322,8 +365,8 @@
 
         /* Icons */
         .icon {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
         }
 
         /* Responsive */
@@ -356,8 +399,12 @@
             }
 
             .btn {
-                min-width: 210px;
+                min-width: 100%;
                 justify-content: center;
+            }
+
+            .timeline {
+                padding-left: 30px;
             }
         }
 
@@ -457,44 +504,54 @@
                     <p class="day-subtitle">Sábado 14 de Febrero</p>
 
                     <div class="itinerary-details">
-                        <div class="activity">
-                            <div class="activity-time">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                                Mañana
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-time">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                        Mañana
+                                    </div>
+                                    <h3 class="timeline-title">Playa de Pinamar</h3>
+                                    <p class="timeline-detail"><span class="emoji-icon">⏰</span> Salida: 11:00 AM</p>
+                                    <p class="timeline-detail"><span class="emoji-icon">🥪</span> Almuerzo: Sanguches de jamón y queso</p>
+                                    <a href="https://maps.app.goo.gl/WiSNkxxE87DWMpAJ7" target="_blank"
+                                        class="btn btn-primary">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        </svg>
+                                        Cómo llegar
+                                    </a>
+                                </div>
                             </div>
-                            <h3 class="activity-title">Playa de Pinamar</h3>
-                            <p class="activity-hour">⏰ Hora de salida: 11:00 AM</p>
-                            <p class="activity-launch">🥪 Almuerzo: Sanguches de jamón y queso</p>
-                            <a href="https://maps.app.goo.gl/WiSNkxxE87DWMpAJ7" target="_blank" class="btn btn-primary">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                </svg>
-                                Cómo llegar
-                            </a>
-                        </div>
 
-                        <div class="activity">
-                            <div class="activity-time">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                </svg>
-                                Noche
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-time">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                        </svg>
+                                        Noche
+                                    </div>
+                                    <h3 class="timeline-title">Centro de San Bernardo</h3>
+                                    <p class="timeline-detail"><span class="emoji-icon">⏰</span> Hora: 20:00 HS</p>
+                                    <p class="timeline-detail"><span class="emoji-icon">🍽️</span> Cena: Milanesas con ensalada</p>
+                                    <a href="https://maps.app.goo.gl/gTE6UMmG5YazTtng7" target="_blank"
+                                        class="btn btn-primary">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        </svg>
+                                        Punto de encuentro
+                                    </a>
+                                </div>
                             </div>
-                            <h3 class="activity-title">Centro de San Bernardo</h3>
-                            <p class="activity-hour">⏰ Hora: 20:00 HS</p>
-                            <p class="activity-dinner">🍽️ Cena: Milanesas con ensalada</p>
-                            <a href="https://maps.app.goo.gl/gTE6UMmG5YazTtng7" target="_blank" class="btn btn-primary">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                </svg>
-                                Punto de encuentro
-                            </a>
                         </div>
 
                         <div class="photos-section">
@@ -521,45 +578,55 @@
                     <p class="day-subtitle">Domingo 15 de Febrero</p>
 
                     <div class="itinerary-details">
-                        <div class="activity">
-                            <div class="activity-time">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                                Todo el día
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-time">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                        Todo el día
+                                    </div>
+                                    <h3 class="timeline-title">Playa de Cariló</h3>
+                                    <p class="timeline-detail"><span class="emoji-icon">⏰</span> Desde las 11:00 AM</p>
+                                    <p class="timeline-detail"><span class="emoji-icon">🥪</span> Almuerzo: Sanguches de milanesa</p>
+                                    <a href="https://maps.app.goo.gl/J3Nm2m4rVeZzQL7w9" target="_blank"
+                                        class="btn btn-primary">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        </svg>
+                                        Cómo llegar
+                                    </a>
+                                </div>
                             </div>
-                            <h3 class="activity-title">Playa de Cariló</h3>
-                            <p class="activity-hour">⏰ Desde las 11:00 AM</p>
-                            <p class="activity-launch">🥪 Almuerzo: Sanguches de milanesa</p>
-                            <a href="https://maps.app.goo.gl/J3Nm2m4rVeZzQL7w9" target="_blank" class="btn btn-primary">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                </svg>
-                                Cómo llegar
-                            </a>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-time">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                </svg>
-                                Noche
-                            </div>
-                            <h3 class="activity-title">Centro de San Bernardo</h3>
-                            <p class="activity-hour">⏰ Hora: 20:00 HS</p>
-                            <p class="activity-dinner">🍽️ Cena: Asado</p>
-                            <a href="https://maps.app.goo.gl/gTE6UMmG5YazTtng7" target="_blank" class="btn btn-primary">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                </svg>
-                                Punto de encuentro
-                            </a>
-                        </div>
 
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-time">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                        </svg>
+                                        Noche
+                                    </div>
+                                    <h3 class="timeline-title">Centro de San Bernardo</h3>
+                                    <p class="timeline-detail"><span class="emoji-icon">⏰</span> Hora: 20:00 HS</p>
+                                    <p class="timeline-detail"><span class="emoji-icon">🍽️</span> Cena: Asado</p>
+                                    <a href="https://maps.app.goo.gl/gTE6UMmG5YazTtng7" target="_blank"
+                                        class="btn btn-primary">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        </svg>
+                                        Punto de encuentro
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="photos-section">
                             <h4 class="photos-title">📸 Subí tus fotos del día</h4>
@@ -585,45 +652,55 @@
                     <p class="day-subtitle">Lunes 16 de Febrero</p>
 
                     <div class="itinerary-details">
-                        <div class="activity">
-                            <div class="activity-time">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                                Mañana
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-time">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                        Mañana
+                                    </div>
+                                    <h3 class="timeline-title">Playa de Villa Gesell</h3>
+                                    <p class="timeline-detail"><span class="emoji-icon">⏰</span> Desde las 11:00 AM</p>
+                                    <p class="timeline-detail"><span class="emoji-icon">🥪</span> Almuerzo: Tacos</p>
+                                    <a href="https://maps.app.goo.gl/kN32vAnS6Ea9MJA28" target="_blank"
+                                        class="btn btn-primary">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        </svg>
+                                        Cómo llegar
+                                    </a>
+                                </div>
                             </div>
-                            <h3 class="activity-title">Playa de Villa Gesell</h3>
-                            <p class="activity-hour">⏰ Desde las 11:00 AM</p>
-                            <p class="activity-launch">🥪 Almuerzo: Tacos</p>
-                            <a href="https://maps.app.goo.gl/kN32vAnS6Ea9MJA28" target="_blank" class="btn btn-primary">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                </svg>
-                                Cómo llegar
-                            </a>
-                        </div>
-                        <div class="activity">
-                            <div class="activity-time">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                </svg>
-                                Noche
-                            </div>
-                            <h3 class="activity-title">Centro de San Bernardo</h3>
-                            <p class="activity-hour">⏰ Hora: 20:00 HS</p>
-                            <p class="activity-dinner">🍽️ Cena: Choris / Hamburguesas</p>
-                            <a href="https://maps.app.goo.gl/gTE6UMmG5YazTtng7" target="_blank" class="btn btn-primary">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                </svg>
-                                Punto de encuentro
-                            </a>
-                        </div>
 
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-time">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                        </svg>
+                                        Noche
+                                    </div>
+                                    <h3 class="timeline-title">Centro de San Bernardo</h3>
+                                    <p class="timeline-detail"><span class="emoji-icon">⏰</span> Hora: 20:00 HS</p>
+                                    <p class="timeline-detail"><span class="emoji-icon">🍽️</span> Cena: Choris / Hamburguesas</p>
+                                    <a href="https://maps.app.goo.gl/gTE6UMmG5YazTtng7" target="_blank"
+                                        class="btn btn-primary">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        </svg>
+                                        Punto de encuentro
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="photos-section">
                             <h4 class="photos-title">📸 Subí tus fotos del día</h4>
@@ -649,24 +726,30 @@
                     <p class="day-subtitle">Martes 17 de Febrero</p>
 
                     <div class="itinerary-details">
-                        <div class="activity">
-                            <div class="activity-time">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                                Mañana
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-time">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                        Mañana
+                                    </div>
+                                    <h3 class="timeline-title">Check-out, Valeria del Mar y regreso a casa</h3>
+                                    <p class="timeline-detail"><span class="emoji-icon">⏰</span> Check-out: 8:00 AM</p>
+                                    <p class="timeline-detail"><span class="emoji-icon">🥪</span> Almuerzo: Choris / Hamburguesas</p>
+                                    <a href="https://maps.app.goo.gl/TBUs4GeGzjtmmNkc6" target="_blank"
+                                        class="btn btn-primary">
+                                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        </svg>
+                                        Cómo llegar
+                                    </a>
+                                </div>
                             </div>
-                            <h3 class="activity-title">Check-out, Valeria del Mar y regreso a casa</h3>
-                            <p class="activity-hour">⏰ Check-out: 8:00 AM</p>
-                            <p class="activity-launch">🍽️ Almuerzo: Choris / Hamburguesas</p>
-                            <a href="https://maps.app.goo.gl/TBUs4GeGzjtmmNkc6" target="_blank" class="btn btn-primary">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                </svg>
-                                Cómo llegar
-                            </a>
                         </div>
 
                         <div class="photos-section">
